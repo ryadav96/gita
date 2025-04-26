@@ -1,34 +1,19 @@
 "use client"
 
-import { useState } from "react"
 import { JournalEntries } from "@/components/journal/journal-entries"
 import { JournalWeeklyRecap } from "@/components/journal/journal-weekly-recap"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AskKrishnaFab } from "@/components/ask-krishna-fab"
 
 export default function JournalPage() {
-  const [activeTab, setActiveTab] = useState("entries")
-
   return (
-    <main className="container px-4 pb-6">
-      <div className="py-4">
-        <h1 className="text-2xl font-bold">Journal</h1>
+    <div className="container max-w-4xl mx-auto px-4 pb-20">
+      <h1 className="text-2xl font-bold mb-6">Your Journal</h1>
+      
+      <div className="mb-8">
+        <JournalWeeklyRecap />
       </div>
-
-      <Tabs defaultValue="entries" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="entries">My Entries</TabsTrigger>
-          <TabsTrigger value="recap">Weekly Recap</TabsTrigger>
-        </TabsList>
-        <TabsContent value="entries">
-          <JournalEntries />
-        </TabsContent>
-        <TabsContent value="recap">
-          <JournalWeeklyRecap />
-        </TabsContent>
-      </Tabs>
-
-      <AskKrishnaFab />
-    </main>
+      
+      <h2 className="text-xl font-semibold mb-4">All Journal Entries</h2>
+      <JournalEntries />
+    </div>
   )
 }

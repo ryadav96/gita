@@ -4,10 +4,19 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useApp } from "@/components/app-provider"
 import Link from "next/link"
 import { getAllChapters } from "@/lib/data"
+import { Chapter } from "@/types" // Import the updated Chapter type
+import { useEffect, useState } from "react" // Import useEffect and useState
 
 export function ChapterList() {
   const { getChapterProgress } = useApp()
-  const chapters = getAllChapters()
+  // Use state to hold chapters, fetch them client-side
+  const [chapters, setChapters] = useState<Chapter[]>([])
+
+  useEffect(() => {
+    // Fetch chapters when the component mounts
+    const fetchedChapters = getAllChapters()
+    setChapters(fetchedChapters)
+  }, []) // Empty dependency array ensures this runs only once
 
   return (
     <div className="space-y-4">
@@ -44,12 +53,15 @@ export function ChapterList() {
                     <span className="absolute text-lg font-bold">{chapter.chapter_number}</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium">{chapter.name_translated}</h3>
+                    {/* Use the correct field names from the updated Chapter type */}
+                    <h3 className="font-medium">{chapter.translation}</h3>
                     <div className="flex justify-between">
-                      <p className="text-sm text-muted-foreground">{chapter.verse_count} verses</p>
+                      {/* Use the correct field name for verse count */}
+                      <p className="text-sm text-muted-foreground">{chapter.verses_count} verses</p>
                       <p className="text-sm text-muted-foreground">{Math.round(progress * 100)}% complete</p>
                     </div>
-                    <p className="mt-2 text-sm line-clamp-2">{chapter.summary}</p>
+                    {/* Use the correct field name for summary */}
+                    <p className="mt-2 text-sm line-clamp-2">{chapter.summary.en}</p>
                   </div>
                 </div>
               </CardContent>

@@ -1,41 +1,34 @@
-"use client"
+import Link from 'next/link';
+import { getAllChapters } from '@/lib/gita-utils'; 
 
-import { useState } from "react"
-import { ChapterList } from "@/components/chapters/chapter-list"
-import { ChapterGrid } from "@/components/chapters/chapter-grid"
-import { Button } from "@/components/ui/button"
-import { Grid2X2, List } from "lucide-react"
-import { AskKrishnaFab } from "@/components/ask-krishna-fab"
+async function getChaptersData() {
+  const chapters = await getAllChapters();
+  return chapters;
+}
 
-export default function ChaptersPage() {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+export default async function ChaptersPage() {
+  const chapters = await getChaptersData();
 
   return (
-    <main className="container px-4 pb-6">
-      <div className="flex items-center justify-between py-4">
-        <h1 className="text-2xl font-bold">Chapters</h1>
-        <div className="flex space-x-2">
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            size="icon"
-            onClick={() => setViewMode("grid")}
-            aria-label="Grid view"
-          >
-            <Grid2X2 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="icon"
-            onClick={() => setViewMode("list")}
-            aria-label="List view"
-          >
-            <List className="h-4 w-4" />
-          </Button>
-        </div>
+    <div>
+      <h1 className="text-2xl font-bold p-4">Bhagavad Gita Chapters</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        {chapters.map((chapter) => (
+          <Link key={chapter.chapter_number} href={`/chapters/${chapter.chapter_number}`} passHref>
+            <div className="block p-6 border rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 cursor-pointer">
+              <h2 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Chapter {chapter.chapter_number}: {chapter.name}
+              </h2>
+              <h3 className="text-md font-semibold text-gray-700 dark:text-gray-400 mb-2">
+                {chapter.translation}
+              </h3>
+              <p className="font-normal text-sm text-gray-700 dark:text-gray-400">
+                {chapter.summary.en.substring(0, 120)}... {/* Show a snippet */}
+              </p>
+            </div>
+          </Link>
+        ))}
       </div>
-
-      {viewMode === "grid" ? <ChapterGrid /> : <ChapterList />}
-      <AskKrishnaFab />
-    </main>
-  )
+    </div>
+  );
 }
