@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SettingsGeneral } from "@/components/settings/settings-general"
@@ -11,7 +11,7 @@ import { SettingsStorage } from "@/components/settings/settings-storage"
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 
-export default function SettingsPage() {
+function SettingsContent() {
   const searchParams = useSearchParams()
   const [activeTab, setActiveTab] = useState<string>("general")
   
@@ -63,5 +63,31 @@ export default function SettingsPage() {
         </TabsContent>
       </Tabs>
     </div>
+  )
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="container py-6 space-y-6 max-w-3xl">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center text-muted-foreground">
+            <ChevronLeft className="h-5 w-5" />
+            <span>Back</span>
+          </div>
+          <h1 className="text-2xl font-bold">Settings</h1>
+        </div>
+        <div className="animate-pulse space-y-6">
+          <div className="h-10 bg-muted rounded-md"></div>
+          <div className="space-y-4">
+            <div className="h-8 bg-muted rounded-md w-3/4"></div>
+            <div className="h-8 bg-muted rounded-md"></div>
+            <div className="h-8 bg-muted rounded-md"></div>
+          </div>
+        </div>
+      </div>
+    }>
+      <SettingsContent />
+    </Suspense>
   )
 }

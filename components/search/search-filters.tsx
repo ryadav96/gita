@@ -134,7 +134,7 @@ export function SearchFilters({ filters, onFilterChange }: SearchFiltersProps) {
                       key={chapter.chapter_number} 
                       value={chapter.chapter_number.toString()}
                     >
-                      {chapter.chapter_number}: {chapter.name_translated}
+                      {chapter.chapter_number}: {chapter.translation || chapter.name_translated}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -206,8 +206,8 @@ export function SearchFilters({ filters, onFilterChange }: SearchFiltersProps) {
                 }}
               />
             </Badge>
-          ))}\
-          \
+          )}
+          
           {localFilters.commentators.map((commentator) => (
             <Badge key={commentator} variant="secondary" className="flex items-center">
               {commentators.find(c => c.id === commentator)?.name}

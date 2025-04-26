@@ -122,3 +122,64 @@ export function askKrishnaQuery(query: string) {
     ],
   };
 }
+
+// Search verses based on query and filters
+export function searchVerses(query: string, filters: { emotions: string[], chapter: string, commentators: string[] }) {
+  console.warn("searchVerses is using mock data.");
+  
+  // Mock search results
+  const mockResults = [
+    {
+      chapter: 2,
+      verse: 47,
+      title: "The Path of Selfless Action",
+      sanskrit: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥",
+      translation: "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.",
+      emotions: ["duty", "action"]
+    },
+    {
+      chapter: 9,
+      verse: 22,
+      title: "Divine Protection",
+      sanskrit: "अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते। तेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥",
+      translation: "But those who worship Me with exclusive devotion, meditating on My transcendental form—to them I carry what they lack, and I preserve what they have.",
+      emotions: ["devotion"]
+    },
+    {
+      chapter: 6,
+      verse: 10,
+      title: "The Practice of Meditation",
+      sanskrit: "योगी युञ्जीत सततमात्मानं रहसि स्थितः। एकाकी यतचित्तात्मा निराशीरपरिग्रहः॥",
+      translation: "A yogi should always try to concentrate their mind on the Supreme Self; they should live alone in a secluded place, being always careful to control their mind and body, having no desires and free from the feeling of possessiveness.",
+      emotions: ["meditation", "self"]
+    }
+  ];
+  
+  // Filter the results based on query and filters
+  return mockResults.filter(verse => {
+    // Filter by text search
+    if (query && !verse.translation.toLowerCase().includes(query.toLowerCase()) && 
+        !verse.title.toLowerCase().includes(query.toLowerCase())) {
+      return false;
+    }
+    
+    // Filter by emotions
+    if (filters.emotions.length > 0 && 
+        !filters.emotions.some(emotion => verse.emotions.includes(emotion))) {
+      return false;
+    }
+    
+    // Filter by chapter
+    if (filters.chapter && verse.chapter !== parseInt(filters.chapter)) {
+      return false;
+    }
+    
+    // For commentators, in a real app we would filter by commentator availability
+    // For now, we'll just assume all verses have all commentators
+    if (filters.commentators.length > 0) {
+      // Implement real commentator filtering in actual app
+    }
+    
+    return true;
+  });
+}
